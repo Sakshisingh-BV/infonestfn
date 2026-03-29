@@ -1,0 +1,227 @@
+@import url('../GlobalTheme.css');
+
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-light);
+  padding: .1rem .1rem;
+  height: 80px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(10px);
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 1rem;
+}
+
+/* Header left section (back btn + logo) */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 5px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
+.logo-image {
+  height: 64px;
+  width: auto;
+}
+
+.logo-text {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: var(--primary);
+  letter-spacing: -0.02em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  padding: 0.5rem 1rem;
+  color: var(--text-body);
+  text-decoration: none;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.nav-link:hover {
+  background: var(--border);
+  text-decoration: none;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.user-info {
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+/* ═══════════════════════════════════════════════
+   Animated Back Button (Uiverse.io style)
+   ═══════════════════════════════════════════════ */
+.styled-wrapper {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.styled-wrapper .button {
+  display: block;
+  position: relative;
+  width: 50px;
+  height: 50px;
+  margin: 0;
+  overflow: hidden;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+}
+
+/* Outer circle — default state (primary color border) */
+.styled-wrapper .button:before {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  inset: 4px;
+  border: 2.5px solid var(--primary, #2563eb);
+  transition:
+    opacity 0.4s cubic-bezier(0.77, 0, 0.175, 1) 80ms,
+    transform 0.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) 80ms;
+}
+
+/* Hover circle — green accent */
+.styled-wrapper .button:after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  inset: 4px;
+  border: 3px solid #22c55e;
+  transform: scale(1.3);
+  transition:
+    opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+    transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  opacity: 0;
+}
+
+/* On hover: fade out the default circle */
+.styled-wrapper .button:hover:before,
+.styled-wrapper .button:focus:before {
+  opacity: 0;
+  transform: scale(0.7);
+  transition:
+    opacity 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+    transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* On hover: bring in the green circle */
+.styled-wrapper .button:hover:after,
+.styled-wrapper .button:focus:after {
+  opacity: 1;
+  transform: scale(1);
+  transition:
+    opacity 0.4s cubic-bezier(0.77, 0, 0.175, 1) 80ms,
+    transform 0.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) 80ms;
+}
+
+/* Arrow container — holds both SVG arrows side-by-side */
+.styled-wrapper .button-box {
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Each arrow SVG — flipped 180° to point LEFT (back) */
+.styled-wrapper .button-elem {
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin: 16px 11px 0 15px;
+  transform: rotate(180deg);
+  fill: var(--primary, #2563eb);
+  transition: fill 0.3s ease;
+}
+
+/* On hover: slide the arrow box to reveal second (green) arrow */
+.styled-wrapper .button:hover .button-box,
+.styled-wrapper .button:focus .button-box {
+  transition: 0.4s;
+  transform: translateX(-46px);
+}
+
+/* Second arrow is green */
+.styled-wrapper .button-elem:nth-child(2) {
+  fill: #22c55e;
+}
+
+/* ═══════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+  }
+
+  .nav-links {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .header-actions {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .header-left {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .styled-wrapper .button {
+    width: 44px;
+    height: 44px;
+  }
+
+  .styled-wrapper .button-elem {
+    width: 18px;
+    height: 18px;
+    margin: 14px 9px 0 13px;
+  }
+
+  .styled-wrapper .button:hover .button-box,
+  .styled-wrapper .button:focus .button-box {
+    transform: translateX(-40px);
+  }
+}
