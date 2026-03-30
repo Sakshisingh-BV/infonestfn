@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { venueAPI } from '../services/api';
+import './MyBookingsCalendar.css';
 
 const VenueCalendar = ({ onDateSelect, selectedDate }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -98,30 +99,15 @@ const VenueCalendar = ({ onDateSelect, selectedDate }) => {
       const isToday = dateStr === new Date().toISOString().split('T')[0];
       const isSelected = selectedDate === dateStr;
       const isPast = dateStr < new Date().toISOString().split('T')[0];
+      const hasBookings = dayBookings.length > 0;
 
       days.push(
         <div
           key={day}
-          className={`calendar-day ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''} ${isPast ? 'past' : ''} ${dayBookings.length > 0 ? 'has-bookings' : ''}`}
+          className={`calendar-day ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''} ${isPast ? 'past' : ''} ${hasBookings ? 'booked' : ''}`}
           onClick={() => onDateSelect && onDateSelect(dateStr)}
         >
           <span className="day-number">{day}</span>
-          {dayBookings.length > 0 && (
-            <div className="booking-indicators">
-              {dayBookings.slice(0, 3).map((booking, idx) => (
-                <div
-                  key={idx}
-                  className="booking-dot"
-                  title={`${booking.venue?.name || 'Venue'}: ${booking.eventName || booking.purpose}`}
-                >
-                  {booking.venue?.name?.substring(0, 2) || 'V'}
-                </div>
-              ))}
-              {dayBookings.length > 3 && (
-                <span className="more-bookings">+{dayBookings.length - 3}</span>
-              )}
-            </div>
-          )}
         </div>
       );
     }
@@ -172,35 +158,7 @@ const VenueCalendar = ({ onDateSelect, selectedDate }) => {
         </div>
       </div>
 
-      {/* Selected Date Details */}
-      {selectedDate && (
-        <div className="selected-date-details">
-          <h4>Bookings for {new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-IN', { 
-            weekday: 'long', 
-            day: 'numeric', 
-            month: 'short', 
-            year: 'numeric' 
-          })}</h4>
-          {getBookingsForDate(selectedDate).length > 0 ? (
-            <div className="bookings-list">
-              {getBookingsForDate(selectedDate).map(booking => (
-                <div key={booking.bookingId} className="booking-item">
-                  <div className="booking-time">
-                    {booking.startTime?.substring(0, 5)} - {booking.endTime?.substring(0, 5)}
-                  </div>
-                  <div className="booking-info">
-                    <strong>{booking.venue?.name || 'Venue'}</strong>
-                    <span>{booking.eventName || booking.purpose}</span>
-                    <span className="booking-by">By: {booking.bookedByName || booking.bookedByEmail}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="no-bookings">No bookings for this date</p>
-          )}
-        </div>
-      )}
+
     </div>
   );
 };

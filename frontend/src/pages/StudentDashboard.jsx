@@ -51,6 +51,8 @@ const StudentDashboard = () => {
 
     const closeModal = () => setSelectedReg(null);
 
+    const isStudent = user?.role === 'STUDENT';
+
     if (loading) {
         return (
             <div className="student-dashboard">
@@ -125,7 +127,8 @@ const StudentDashboard = () => {
                             <li><strong>Event:</strong> {getEventName(selectedReg.eventId)}</li>
                             <li><strong>Status:</strong> {selectedReg.status}</li>
                             <li><strong>Submitted:</strong> {formatDate(selectedReg.submissionDate)}</li>
-                            {selectedReg.formData && (
+                            {/* For students, hide raw form JSON data as per scope restriction. */}
+                            {!isStudent && selectedReg.formData && (
                                 <li><strong>Form Data:</strong> <pre>{selectedReg.formData}</pre></li>
                             )}
                         </ul>

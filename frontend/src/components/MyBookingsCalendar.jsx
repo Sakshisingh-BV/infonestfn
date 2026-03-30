@@ -141,7 +141,7 @@ const MyBookingsCalendar = ({ onBookingSelect }) => {
       days.push(
         <motion.div
           key={day}
-          className={`calendar-day glass-card ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''} ${isPast ? 'past' : ''} ${hasBookings ? 'booked heatmap-${Math.min(dayBookings.length, 5)}' : ''}`}
+          className={`calendar-day glass-card ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''} ${isPast ? 'past' : ''} ${hasBookings ? `booked` : ''}`}
           initial={{ scale: 0.95, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.2, delay: day * 0.01 }}
@@ -150,14 +150,6 @@ const MyBookingsCalendar = ({ onBookingSelect }) => {
           onMouseLeave={hideTooltip}
         >
           <span className="day-number">{day}</span>
-          {hasBookings && (
-            <div className="booking-indicators">
-              {dayBookings.slice(0, 3).map((booking, idx) => (
-                <div key={idx} className="booking-dot" title={`${booking.venue?.name}: ${booking.eventName || booking.purpose}`}></div>
-              ))}
-              {dayBookings.length > 3 && <span className="more-bookings">+{dayBookings.length - 3}</span>}
-            </div>
-          )}
         </motion.div>
       );
     }
@@ -197,38 +189,7 @@ const MyBookingsCalendar = ({ onBookingSelect }) => {
         </div>
       </div>
 
-      {selectedDate && (
-        <motion.div 
-          className="selected-date-details glass-card animate-gradient"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <h4>📋 Bookings for {new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-IN', { 
-            weekday: 'long', 
-            day: 'numeric', 
-            month: 'short', 
-            year: 'numeric' 
-          })}</h4>
-          {getBookingsForDate(selectedDate).length > 0 ? (
-            <div className="bookings-list">
-              {getBookingsForDate(selectedDate).map(booking => (
-                <div key={booking.bookingId} className="booking-item">
-                  <div className="booking-time">
-                    {booking.startTime?.substring(0, 5)} - {booking.endTime?.substring(0, 5)}
-                  </div>
-                  <div className="booking-info">
-                    <strong>{booking.venue?.name || 'Venue'}</strong>
-                    <span>{booking.eventName || booking.purpose}</span>
-                    <span className="booking-by">By: {booking.bookedByName || booking.bookedByEmail}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="no-bookings">No bookings for this date</p>
-          )}
-        </motion.div>
-      )}
+
     </div>
   );
 };
