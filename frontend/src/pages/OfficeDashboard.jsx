@@ -404,7 +404,7 @@ const OfficeDashboard = () => {
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
                                 <div>
                                     <h3 style={{ color: '#1e40af', margin: '0 0 4px 0' }}>{isUpdateMode ? <><i className="fa-solid fa-pen-to-square" /> Edit</> : <><i className="fa-solid fa-plus" /> Add</>} for {selectedTeacher.firstName} {selectedTeacher.lastName}</h3>
-                                    <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0 }}>Upload weekly schedule (.xlsx / .xls / .csv)</p>
+                                    <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0 }}>Upload weekly schedule (.xlsx)</p>
                                 </div>
                                 <button className="btn btn-secondary btn-sm" onClick={downloadTemplate} style={{ whiteSpace: 'nowrap' }}><i className="fa-solid fa-download" /> Template</button>
                             </div>
