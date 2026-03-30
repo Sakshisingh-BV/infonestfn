@@ -73,13 +73,14 @@ const Schedule = () => {
         }
     };
 
-    // 4. Search Logic - Option 3: Advanced/Custom Search
     const handleAdvancedSearch = async () => {
         if (!searchQuery) {
             setMessage({ type: 'error', text: 'Enter teacher name first' });
             return;
         }
         setLoading(true);
+        // Automatically close the modal when search begins
+        setShowAdvanced(false);
         try {
             const response = await scheduleAPI.searchAdvanced(
                 searchQuery,
@@ -92,7 +93,6 @@ const Schedule = () => {
                 scheduledLocation: `${advancedData.day} at ${advancedData.time}`,
                 lastUpdated: "Custom Query"
             });
-            setShowAdvanced(false);
             setShowSchedule(true);
         } catch (err) {
             setMessage({ type: 'error', text: 'No record found for this specific slot.' });
@@ -231,6 +231,7 @@ const Schedule = () => {
                                 <label>Select Day</label>
                                 <select
                                     className="modal-input"
+                                    value={advancedData.day}
                                     onChange={(e) => setAdvancedData({ ...advancedData, day: e.target.value })}
                                 >
                                     {/* 👈 Tuesday hata diya, Saturday & Sunday add kar diye */}
@@ -253,7 +254,10 @@ const Schedule = () => {
 
                             <button
                                 className="btn btn-primary btn-full"
-                                onClick={handleAdvancedSearch} // 👈 MAIN FIX: Yahan 'handleSearch' ki jagah 'handleAdvancedSearch' aayega
+                                onClick={() => {
+                                    setShowAdvanced(false);
+                                    handleAdvancedSearch();
+                                }} // 👈 FIX: Modal closes and then search triggers
                                 disabled={loading}
                             >
                                 {loading ? 'Searching...' : 'Search Schedule'}

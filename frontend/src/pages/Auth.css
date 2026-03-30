@@ -65,6 +65,20 @@
     position: relative;
 }
 
+/* Hide browser's native password reveal eye icon (Edge/Chrome) */
+.input-wrapper input[type="password"]::-ms-reveal,
+.input-wrapper input[type="password"]::-ms-clear {
+    display: none;
+}
+.input-wrapper input[type="password"]::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+}
+/* Also globally hide it everywhere there's a password field */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
+
 .input-wrapper input {
     padding-right: 2.75rem;
 }

@@ -321,7 +321,6 @@ const Clubs = () => {
 
         return (
             <div className="cl-page cl-page--detail">
-                <Link to="/clubs" className="cl-back-link">← Back to Clubs</Link>
 
                 {/* Club hero card */}
                 <div className="cl-club-hero" style={{ '--ch-from': color.from, '--ch-to': color.to }}>

@@ -171,7 +171,7 @@ const MyBookingsCalendar = ({ onBookingSelect }) => {
         <button className="calendar-nav-btn" onClick={goToPreviousMonth}>◀</button>
         <h3 className="calendar-title">{monthNames[month]} {year}</h3>
         <button className="calendar-nav-btn" onClick={goToNextMonth}>▶</button>
-        <button className="today-btn" onClick={goToToday}>Today</button>
+        <button className="today-btn logout-anim-btn" onClick={goToToday}><span>Today</span></button>
       </div>
 
       <div className="calendar-weekdays">

@@ -100,8 +100,8 @@ public ResponseEntity<?> uploadExcel(
             return ResponseEntity.ok(new ArrayList<>());
         }
         
-        // Database se data laya
-        List<User> teachers = userRepository.searchManageableTeachers(query.trim());
+        // Smart search: tries full query, then individual tokens, then swapped order
+        List<User> teachers = scheduleService.findMatchingUsers(query.trim());
         
         // 500 ERROR FIX: JSON Infinite Recursion rokne ke liye custom map banaya
         List<java.util.Map<String, Object>> safeResponse = new ArrayList<>();

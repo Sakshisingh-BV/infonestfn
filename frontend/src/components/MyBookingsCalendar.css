@@ -78,9 +78,21 @@
 }
 
 .today-btn:hover {
-    background: var(--primary-hov);
+    background: var(--primary) !important;
+    color: #ffffff !important;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+/* Keep Today button solid blue — hide the white circles from logout-anim-btn */
+.today-btn.logout-anim-btn::before,
+.today-btn.logout-anim-btn::after {
+    display: none !important;
+}
+
+.today-btn.logout-anim-btn:hover {
+    background: var(--primary) !important;
+    color: #ffffff !important;
 }
 
 .calendar-weekdays {

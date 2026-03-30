@@ -37,16 +37,22 @@ const OfficeDashboard = () => {
 
     // 2. Update the Search function to pass 'teacher.email' instead of full name
     const handleTeacherSearch = async () => {
-        if (!teacherSearch.trim()) return; // Khali search allow mat karein
+        if (!teacherSearch.trim()) return;
+        setSelectedTeacher(null);
+        setSelectedFile(null);
         try {
             const response = await scheduleAPI.searchTeachers(teacherSearch.trim());
             setTeacherResults(response.data);
 
-            // Results aane par unka schedule status check karein
-            response.data.forEach(teacher => {
-                checkTeacherSchedule(teacher.email);
-            });
-            setMessage({ type: '', text: '' }); // Purana error hata dein
+            if (response.data.length === 0) {
+                setMessage({ type: 'error', text: `No teacher found matching "${teacherSearch.trim()}". Please check the name and try again.` });
+            } else {
+                // Results aane par unka schedule status check karein
+                response.data.forEach(teacher => {
+                    checkTeacherSchedule(teacher.email);
+                });
+                setMessage({ type: '', text: '' });
+            }
         } catch (err) {
             setTeacherResults([]);
             setMessage({ type: 'error', text: 'No such teacher found in records.' });
@@ -241,13 +247,12 @@ const OfficeDashboard = () => {
         <div className="office-dashboard page-container">
             <header className="dashboard-header card">
                 <div className="header-info">
-                    <h1>🏢 Office Dashboard</h1>
+                    <h1><i className="fa-solid fa-building-columns" style={{ marginRight: '0.5rem' }} /> Office Dashboard</h1>
                     <span className="role-badge">OFFICE</span>
                 </div>
                 <div className="header-actions">
-                    <Link to="/booking" className="btn btn-primary">📍 Book Venue</Link>
-                    <Link to="/events" className="btn btn-secondary">🔍 Browse Events</Link>
-                    <button className="btn btn-danger" onClick={logout}>Logout</button>
+                    <Link to="/booking" className="btn btn-primary"><i className="fa-solid fa-location-dot" /> Book Venue</Link>
+                    <Link to="/events" className="btn btn-secondary"><i className="fa-solid fa-magnifying-glass" /> Browse Events</Link>
                 </div>
             </header>
 
@@ -264,13 +269,13 @@ const OfficeDashboard = () => {
             {/* Tabs */}
             <div className="tabs">
                 <button className={`tab-btn ${activeTab === 'bookings' ? 'active' : ''}`} onClick={() => setActiveTab('bookings')}>
-                    📋 My Bookings
+                    <i className="fa-solid fa-clipboard-list" /> My Bookings
                 </button>
                 <button className={`tab-btn ${activeTab === 'venues' ? 'active' : ''}`} onClick={() => setActiveTab('venues')}>
-                    🏫 Manage Venues
+                    <i className="fa-solid fa-school" /> Manage Venues
                 </button>
                 <button className={`tab-btn ${activeTab === 'schedules' ? 'active' : ''}`} onClick={() => setActiveTab('schedules')}>
-                    📅 Teacher Schedules
+                    <i className="fa-solid fa-calendar-days" /> Teacher Schedules
                 </button>
             </div>
 
@@ -278,10 +283,10 @@ const OfficeDashboard = () => {
             {/* My Bookings Tab */}
             {activeTab === 'bookings' && (
                 <div className="card">
-                    <h2>📅 My Venue Bookings</h2>
+                    <h2><i className="fa-solid fa-calendar-check" /> My Venue Bookings</h2>
                     <div className="action-bar">
-                        <Link to="/booking" className="btn btn-primary">➕ New Booking</Link>
-                        <button className="btn btn-secondary" onClick={fetchData}>🔄 Refresh</button>
+                        <Link to="/booking" className="btn btn-primary"><i className="fa-solid fa-plus" /> New Booking</Link>
+                        <button className="btn btn-secondary" onClick={fetchData}><i className="fa-solid fa-arrows-rotate" /> Refresh</button>
                     </div>
 
                     {/* Calendar View */}
@@ -318,10 +323,10 @@ const OfficeDashboard = () => {
             {/* Manage Venues Tab */}
             {activeTab === 'venues' && (
                 <div className="card">
-                    <h2>🏫 All Venues</h2>
+                    <h2><i className="fa-solid fa-school" /> All Venues</h2>
                     <div className="action-bar">
-                        <button className="btn btn-primary" onClick={() => setShowAddModal(true)}>➕ Add Venue</button>
-                        <button className="btn btn-secondary" onClick={fetchData}>🔄 Refresh</button>
+                        <button className="btn btn-primary" onClick={() => setShowAddModal(true)}><i className="fa-solid fa-plus" /> Add Venue</button>
+                        <button className="btn btn-secondary" onClick={fetchData}><i className="fa-solid fa-arrows-rotate" /> Refresh</button>
                     </div>
 
                     {/* Animated Venue Cards with Custom Style */}
@@ -349,16 +354,19 @@ const OfficeDashboard = () => {
             {/* Line 410 ke paas se replace shuru karein */}
             {activeTab === 'schedules' && (
                 <div className="card">
-                    <h2>📅 Manage Teacher Schedules</h2>
-                    <div className="management-search-bar" style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
-                        <input
-                            type="text"
-                            placeholder="Search teacher name..."
-                            className="form-control"
-                            value={teacherSearch}
-                            onChange={(e) => setTeacherSearch(e.target.value)}
-                        />
-                        <button className="btn btn-primary" onClick={handleTeacherSearch}>🔍 Search</button>
+                    <h2><i className="fa-solid fa-calendar-days" /> Manage Teacher Schedules</h2>
+                    <div style={{ marginBottom: '20px' }}>
+                        <div className="management-search-bar" style={{ display: 'flex', gap: '10px' }}>
+                            <input
+                                type="text"
+                                placeholder="Type firstname lastname"
+                                className="form-control"
+                                value={teacherSearch}
+                                onChange={(e) => setTeacherSearch(e.target.value)}
+                            />
+                            <button className="btn btn-primary" onClick={handleTeacherSearch}><i className="fa-solid fa-magnifying-glass" /> Search</button>
+                        </div>
+
                     </div>
 
                     {teacherResults.map(t => {
@@ -367,7 +375,7 @@ const OfficeDashboard = () => {
                             <div key={t.userId} className="teacher-item" style={{ padding: '15px', borderBottom: '1px solid #ddd', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                                     {hasSchedule && (
-                                        <button onClick={() => handleViewSchedule(t)} title="View Data" style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.5rem' }}>📊</button>
+                                        <button onClick={() => handleViewSchedule(t)} title="View Data" style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2rem', color: 'var(--primary)' }}><i className="fa-solid fa-chart-bar" /></button>
                                     )}
                                     <div>
                                         <strong>{t.firstName} {t.lastName}</strong>
@@ -379,11 +387,11 @@ const OfficeDashboard = () => {
                                 </div>
                                 <div className="action-buttons" style={{ display: 'flex', gap: '8px' }}>
                                     {!hasSchedule ? (
-                                        <button className="btn-sm btn-success" onClick={() => handleAddSchedule(t)}>➕ Add</button>
+                                        <button className="btn-sm btn-success" onClick={() => handleAddSchedule(t)}><i className="fa-solid fa-plus" /> Add</button>
                                     ) : (
                                         <>
-                                            <button className="btn-sm btn-warning" onClick={() => handleEditSchedule(t)}>🔄 Edit</button>
-                                            <button className="btn-sm btn-danger" onClick={() => handleDeleteSchedule(t)}>🗑️ Delete</button>
+                                            <button className="btn-sm btn-warning" onClick={() => handleEditSchedule(t)}><i className="fa-solid fa-pen-to-square" /> Edit</button>
+                                            <button className="btn-sm btn-danger" onClick={() => handleDeleteSchedule(t)}><i className="fa-solid fa-trash" /> Delete</button>
                                         </>
                                     )}
                                 </div>
@@ -392,19 +400,20 @@ const OfficeDashboard = () => {
                     })}
 
                     {selectedTeacher && (
-                        <div className="upload-section card" style={{ border: '2px solid var(--primary)', marginTop: '20px' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                        <div className="upload-section card" style={{ border: '2px solid var(--primary)', marginTop: '20px', background: 'linear-gradient(135deg, #f0f7ff 0%, #f8fafc 100%)' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
                                 <div>
-                                    <h3>{isUpdateMode ? '🔄 Edit' : '➕ Add'} for {selectedTeacher.firstName}</h3>
-                                    <p style={{ fontSize: '0.8rem', color: '#666' }}>Upload weekly schedule file.</p>
+                                    <h3 style={{ color: '#1e40af', margin: '0 0 4px 0' }}>{isUpdateMode ? <><i className="fa-solid fa-pen-to-square" /> Edit</> : <><i className="fa-solid fa-plus" /> Add</>} for {selectedTeacher.firstName} {selectedTeacher.lastName}</h3>
+                                    <p style={{ fontSize: '0.8rem', color: '#64748b', margin: 0 }}>Upload weekly schedule (.xlsx / .xls / .csv)</p>
                                 </div>
-                                <button className="btn btn-secondary btn-sm" onClick={downloadTemplate}>📥 Template</button>
+                                <button className="btn btn-secondary btn-sm" onClick={downloadTemplate} style={{ whiteSpace: 'nowrap' }}><i className="fa-solid fa-download" /> Template</button>
                             </div>
-                            <div style={{ backgroundColor: '#fff3cd', padding: '10px', borderRadius: '5px', marginBottom: '15px', fontSize: '0.8rem', color: '#856404' }}>
-                                <strong>Note:</strong> Teacher Name, Day, Subject, Batch, Room, Start, End, Cabin. (No Tuesdays).
+                            <div style={{ backgroundColor: '#e0f2fe', padding: '10px 14px', borderRadius: '8px', marginBottom: '15px', fontSize: '0.8rem', color: '#0369a1', border: '1px solid #bae6fd' }}>
+                                <i className="fa-solid fa-lightbulb" style={{ marginRight: '6px', color: '#0ea5e9' }}></i>
+                                <strong>Format:</strong> Teacher Name, Day, Subject, Batch, Room, Start Time, End Time, Cabin. <span style={{ color: '#dc2626' }}>(No Tuesdays)</span>
                             </div>
                             <form onSubmit={handleOfficeScheduleUpload}>
-                                <input type="file" accept=".xlsx, .xls, .csv" onChange={(e) => setSelectedFile(e.target.files[0])} className="form-control" />
+                                <input type="file" accept=".xlsx, .xls, .csv" onChange={(e) => setSelectedFile(e.target.files[0])} className="form-control" style={{ border: '1px solid #bae6fd', borderRadius: '8px' }} />
                                 <div style={{ marginTop: '15px', display: 'flex', gap: '10px' }}>
                                     <button type="submit" className="btn btn-primary" disabled={loading}>{loading ? 'Uploading...' : 'Confirm Sync'}</button>
                                     <button type="button" className="btn btn-secondary" onClick={() => setSelectedTeacher(null)}>Cancel</button>
@@ -420,7 +429,7 @@ const OfficeDashboard = () => {
                 <div className="modal-overlay" onClick={() => setShowAddModal(false)}>
                     <div className="modal" onClick={e => e.stopPropagation()}>
                         <button className="close-btn" onClick={() => setShowAddModal(false)}>×</button>
-                        <h3>➕ Add Venue</h3>
+                        <h3><i className="fa-solid fa-plus" /> Add Venue</h3>
                         <form onSubmit={handleAddVenue}>
                             <div className="form-group">
                                 <label>Venue Name *</label>
@@ -471,7 +480,7 @@ const OfficeDashboard = () => {
                             ✖
                         </button>
                         <h3 style={{ borderBottom: '2px solid #ddd', paddingBottom: '10px', color: 'black' }}>
-                            📊 Schedule Data: {viewModal.teacherName}
+                            <i className="fa-solid fa-chart-bar" /> Schedule Data: {viewModal.teacherName}
                         </h3>
                         <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '15px', color: 'black' }}>
                             <thead>

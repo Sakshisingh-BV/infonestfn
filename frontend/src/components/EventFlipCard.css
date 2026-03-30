@@ -154,9 +154,12 @@
 }
 
 .ebc-btn.btn-delete {
-  background: #ef4444;
+  background: transparent;
+  color: #ef4444;
+  border: 1.5px solid #ef4444;
 }
 
 .ebc-btn.btn-delete:hover {
-  background: #dc2626;
+  background: #ef4444;
+  color: white;
 }

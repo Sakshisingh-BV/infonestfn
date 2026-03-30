@@ -104,15 +104,7 @@ const Events = () => {
         <div className="events-page page-container">
             {/* Header */}
             <header className="page-header card">
-                <h1>Events</h1>
-                <div className="header-actions">
-                    {isAuthenticated && (
-                        <>
-                            <span className="user-info">Hi, {user?.firstName}!</span>
-                            <button className="btn btn-secondary" onClick={goToDashboard}>My Dashboard</button>
-                        </>
-                    )}
-                </div>
+                <h1><i className="fa-solid fa-ticket" style={{ marginRight: '0.6rem', color: 'var(--primary)' }} />Events</h1>
             </header>
 
             <div style={{ height: '1.5rem' }} />
@@ -126,7 +118,7 @@ const Events = () => {
             )}
 
             {/* Clubs Section */}
-            <h2 className="section-title">🏢 Clubs</h2>
+            <h2 className="section-title"><i className="fa-solid fa-users-rectangle" style={{ marginRight: '0.5rem' }} />Clubs</h2>
             <div className="clubs-grid">
                 {clubs.length > 0 ? (
                     clubs.map(club => (
@@ -144,7 +136,7 @@ const Events = () => {
             </div>
 
             {/* Events Section */}
-            <h2 className="section-title">📅 Upcoming Events</h2>
+            <h2 className="section-title"><i className="fa-solid fa-calendar-days" style={{ marginRight: '0.5rem' }} />Upcoming Events</h2>
             <div className="events-grid">
                 {events.length > 0 ? (
                     events.map((event, index) => (

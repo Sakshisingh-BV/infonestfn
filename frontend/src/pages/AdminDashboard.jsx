@@ -11,14 +11,14 @@ import '../components/EventFlipCard.css';
 /* ─────────────────────────────────────────────
    Stat Card
 ───────────────────────────────────────────── */
-const StatCard = memo(({ label, value, sub, icon, color }) => (
+const StatCard = memo(({ label, value, sub, icon, iconColor, barColor }) => (
     <div className="stat-card">
-        <div className="stat-icon" style={{ background: color }}>{icon}</div>
+        <div className="stat-icon" style={{ background: 'none', color: iconColor || '#2563eb', fontSize: '2rem' }}>{icon}</div>
         <span className="stat-num">{value}</span>
         <span className="stat-label">{label}</span>
         <span className="stat-sub">{sub}</span>
         <div className="stat-bar-track">
-            <div className="stat-bar-fill" style={{ width: `${Math.min(100, value * 2)}%`, background: color }} />
+            <div className="stat-bar-fill" style={{ width: `${Math.min(100, value * 2)}%`, background: barColor || iconColor || '#2563eb' }} />
         </div>
     </div>
 ));
@@ -287,10 +287,10 @@ const AdminDashboard = () => {
     }
 
     const TABS = [
-        { key: 'clubs', label: '🏢 Clubs' },
-        { key: 'events', label: '📅 Events' },
-        { key: 'faculty', label: '👥 Faculty' },
-        { key: 'bookings', label: '📋 Bookings' },
+        { key: 'clubs', label: <><i className="fa-solid fa-building" /> Clubs</> },
+        { key: 'events', label: <><i className="fa-solid fa-calendar-days" /> Events</> },
+        { key: 'faculty', label: <><i className="fa-solid fa-users" /> Faculty</> },
+        { key: 'bookings', label: <><i className="fa-solid fa-clipboard-list" /> Bookings</> },
     ];
 
     return (
@@ -300,12 +300,11 @@ const AdminDashboard = () => {
             <header className="dashboard-header">
                 <div className="header-title">
                     <span className="header-badge">ADMIN</span>
-                    <h1>🛡️ Admin Dashboard</h1>
+                    <h1><i className="fa-solid fa-shield-halved" style={{marginRight:'0.5rem'}} /> Admin Dashboard</h1>
                     <p className="header-sub">Welcome back, {user?.firstName || 'Admin'}</p>
                 </div>
                 <div className="header-actions">
-                    <Link to="/events" className="btn btn-secondary">🔍 Browse Events</Link>
-                    <button className="btn btn-danger" onClick={logout}>Logout</button>
+                    <Link to="/events" className="btn btn-secondary"><i className="fa-solid fa-magnifying-glass" /> Browse Events</Link>
                 </div>
             </header>
 
@@ -322,10 +321,10 @@ const AdminDashboard = () => {
 
             {/* ── Stat Cards ── */}
             <div className="bento-stats">
-                <StatCard icon="🏢" label="Total Clubs" value={clubs.length} sub="Active clubs" color="linear-gradient(135deg,#2563eb,#60a5fa)" />
-                <StatCard icon="📅" label="Events" value={events.length} sub="Scheduled" color="linear-gradient(135deg,#7c3aed,#a78bfa)" />
-                <StatCard icon="👥" label="Faculty" value={faculty.length} sub="Members" color="linear-gradient(135deg,#059669,#34d399)" />
-                <StatCard icon="📋" label="Bookings" value={myBookings.length} sub="Venue requests" color="linear-gradient(135deg,#d97706,#fbbf24)" />
+                <StatCard icon={<i className="fa-solid fa-building" />} label="Total Clubs" value={clubs.length} sub="Active clubs" iconColor="#2563eb" barColor="#2563eb" />
+                <StatCard icon={<i className="fa-solid fa-calendar-days" />} label="Events" value={events.length} sub="Scheduled" iconColor="#7c3aed" barColor="#7c3aed" />
+                <StatCard icon={<i className="fa-solid fa-users" />} label="Faculty" value={faculty.length} sub="Members" iconColor="#059669" barColor="#059669" />
+                <StatCard icon={<i className="fa-solid fa-clipboard-list" />} label="Bookings" value={myBookings.length} sub="Venue requests" iconColor="#d97706" barColor="#d97706" />
             </div>
 
             {/* ── Tabs ── */}
@@ -344,14 +343,14 @@ const AdminDashboard = () => {
             {/* ══ CLUBS TAB ══ */}
             {activeTab === 'clubs' && (
                 <div className="card">
-                    <h2>🏢 Manage Clubs</h2>
+                    <h2><i className="fa-solid fa-building" /> Manage Clubs</h2>
                     <div className="action-bar">
-                        <button className="btn btn-primary" onClick={() => openModal('club')}>➕ Add Club</button>
-                        <button className="btn btn-secondary" onClick={fetchData}>🔄 Refresh</button>
+                        <button className="btn btn-primary" onClick={() => openModal('club')}><i className="fa-solid fa-plus" /> Add Club</button>
+                        <button className="btn btn-secondary" onClick={fetchData}><i className="fa-solid fa-arrows-rotate" /> Refresh</button>
                     </div>
                     {clubs.length === 0 ? (
                         <div className="empty-state">
-                            <span className="empty-icon">🏢</span>
+                            <span className="empty-icon"><i className="fa-solid fa-building" /></span>
                             <p>No clubs yet. Add one to get started!</p>
                         </div>
                     ) : (
@@ -373,14 +372,14 @@ const AdminDashboard = () => {
             {/* ══ EVENTS TAB ══ */}
             {activeTab === 'events' && (
                 <div className="card">
-                    <h2>📅 Manage Events</h2>
+                    <h2><i className="fa-solid fa-calendar-days" /> Manage Events</h2>
                     <div className="action-bar">
-                        <button className="btn btn-primary" onClick={() => openModal('event')}>➕ Add Event</button>
-                        <button className="btn btn-secondary" onClick={fetchData}>🔄 Refresh</button>
+                        <button className="btn btn-primary" onClick={() => openModal('event')}><i className="fa-solid fa-plus" /> Add Event</button>
+                        <button className="btn btn-secondary" onClick={fetchData}><i className="fa-solid fa-arrows-rotate" /> Refresh</button>
                     </div>
                     {events.length === 0 ? (
                         <div className="empty-state">
-                            <span className="empty-icon">📅</span>
+                            <span className="empty-icon"><i className="fa-solid fa-calendar-days" /></span>
                             <p>No events found.</p>
                         </div>
                     ) : (
@@ -401,14 +400,14 @@ const AdminDashboard = () => {
             {/* ══ FACULTY TAB ══ */}
             {activeTab === 'faculty' && (
                 <div className="card">
-                    <h2>👥 Manage Faculty Assignments</h2>
+                    <h2><i className="fa-solid fa-users" /> Manage Faculty Assignments</h2>
                     <div className="action-bar">
-                        <button className="btn btn-primary" onClick={() => openModal('assign')}>➕ Assign Faculty</button>
-                        <button className="btn btn-secondary" onClick={fetchData}>🔄 Refresh</button>
+                        <button className="btn btn-primary" onClick={() => openModal('assign')}><i className="fa-solid fa-plus" /> Assign Faculty</button>
+                        <button className="btn btn-secondary" onClick={fetchData}><i className="fa-solid fa-arrows-rotate" /> Refresh</button>
                     </div>
                     {faculty.length === 0 ? (
                         <div className="empty-state">
-                            <span className="empty-icon">👥</span>
+                            <span className="empty-icon"><i className="fa-solid fa-users" /></span>
                             <p>No faculty members found.</p>
                         </div>
                     ) : (
@@ -424,10 +423,10 @@ const AdminDashboard = () => {
             {/* ══ BOOKINGS TAB ══ */}
             {activeTab === 'bookings' && (
                 <div className="card">
-                    <h2>📋 My Venue Bookings</h2>
+                    <h2><i className="fa-solid fa-clipboard-list" /> My Venue Bookings</h2>
                     <div className="action-bar">
-                        <Link to="/booking" className="btn btn-primary">➕ New Booking</Link>
-                        <button className="btn btn-secondary" onClick={fetchData}>🔄 Refresh</button>
+                        <Link to="/booking" className="btn btn-primary"><i className="fa-solid fa-plus" /> New Booking</Link>
+                        <button className="btn btn-secondary" onClick={fetchData}><i className="fa-solid fa-arrows-rotate" /> Refresh</button>
                     </div>
                     <MyBookingsCalendar />
                     <h3 className="section-subheading">All Bookings</h3>
@@ -440,11 +439,11 @@ const AdminDashboard = () => {
                                 </div>
                                 <div className="booking-details">
                                     <div className="detail-row">
-                                        <span>📅</span>
+                                        <span><i className="fa-regular fa-calendar" /></span>
                                         <span>{new Date(b.bookingDate + 'T00:00:00').toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
                                     </div>
                                     <div className="detail-row">
-                                        <span>⏰</span>
+                                        <span><i className="fa-regular fa-clock" /></span>
                                         <span>
                                             {new Date('1970-01-01T' + b.startTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })}
                                             {' – '}
@@ -452,7 +451,7 @@ const AdminDashboard = () => {
                                         </span>
                                     </div>
                                     <div className="detail-row">
-                                        <span>🎯</span>
+                                        <span><i className="fa-solid fa-bullseye" /></span>
                                         <span>{b.purpose}</span>
                                     </div>
                                 </div>
@@ -464,7 +463,7 @@ const AdminDashboard = () => {
                             </GlassCard>
                         )) : (
                             <div className="empty-state">
-                                <span className="empty-icon">📋</span>
+                                <span className="empty-icon"><i className="fa-solid fa-clipboard-list" /></span>
                                 <p>No bookings yet. <Link to="/booking" className="link-primary">Book a venue!</Link></p>
                             </div>
                         )}
@@ -481,10 +480,10 @@ const AdminDashboard = () => {
                         {/* ── Club modal ── */}
                         {modalType === 'club' && (
                             <>
-                                <h3>{editingItem ? '✏️ Edit Club' : '➕ Add Club'}</h3>
+                                <h3>{editingItem ? <><i className="fa-solid fa-pen-to-square" /> Edit Club</> : <><i className="fa-solid fa-plus" /> Add Club</>}</h3>
                                 <form onSubmit={handleClubSubmit}>
                                     <div className="form-group">
-                                        <label>🪪 Club ID {editingItem ? '' : '*'}</label>
+                                        <label><i className="fa-solid fa-id-card" /> Club ID {editingItem ? '' : '*'}</label>
                                         <input
                                             value={clubForm.clubId}
                                             onChange={e => setClubForm({ ...clubForm, clubId: e.target.value })}
@@ -494,7 +493,7 @@ const AdminDashboard = () => {
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <label>🏢 Club Name *</label>
+                                        <label><i className="fa-solid fa-building" /> Club Name *</label>
                                         <input
                                             value={clubForm.clubName}
                                             onChange={e => setClubForm({ ...clubForm, clubName: e.target.value })}
@@ -503,7 +502,7 @@ const AdminDashboard = () => {
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <label>📝 Description</label>
+                                        <label><i className="fa-solid fa-pen" /> Description</label>
                                         <textarea
                                             value={clubForm.description}
                                             onChange={e => setClubForm({ ...clubForm, description: e.target.value })}
@@ -512,7 +511,7 @@ const AdminDashboard = () => {
                                         />
                                     </div>
                                     <button type="submit" className="btn btn-primary btn-full">
-                                        {editingItem ? '✅ Update Club' : '➕ Add Club'}
+                                        {editingItem ? <><i className="fa-solid fa-check" /> Update Club</> : <><i className="fa-solid fa-plus" /> Add Club</>}
                                     </button>
                                 </form>
                             </>
@@ -521,17 +520,17 @@ const AdminDashboard = () => {
                         {/* ── Event modal ── */}
                         {modalType === 'event' && (
                             <>
-                                <h3>{editingItem ? '✏️ Edit Event' : '➕ Add Event'}</h3>
+                                <h3>{editingItem ? <><i className="fa-solid fa-pen-to-square" /> Edit Event</> : <><i className="fa-solid fa-plus" /> Add Event</>}</h3>
                                 <form onSubmit={handleEventSubmit}>
                                     <div className="form-group">
-                                        <label>🏢 Club *</label>
+                                        <label><i className="fa-solid fa-building" /> Club *</label>
                                         <select value={eventForm.clubId} onChange={e => setEventForm({ ...eventForm, clubId: e.target.value })} required>
                                             <option value="">Select a club…</option>
                                             {clubs.map(c => <option key={c.clubId} value={c.clubId}>{c.clubName}</option>)}
                                         </select>
                                     </div>
                                     <div className="form-group">
-                                        <label>🎉 Event Name *</label>
+                                        <label><i className="fa-solid fa-star" /> Event Name *</label>
                                         <input
                                             value={eventForm.eventName}
                                             onChange={e => setEventForm({ ...eventForm, eventName: e.target.value })}
@@ -540,7 +539,7 @@ const AdminDashboard = () => {
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <label>📝 Description</label>
+                                        <label><i className="fa-solid fa-pen" /> Description</label>
                                         <textarea
                                             value={eventForm.description}
                                             onChange={e => setEventForm({ ...eventForm, description: e.target.value })}
@@ -550,30 +549,30 @@ const AdminDashboard = () => {
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group">
-                                            <label>📅 Date *</label>
+                                            <label><i className="fa-solid fa-calendar-days" /> Date *</label>
                                             <input type="date" value={eventForm.eventDate} onChange={e => setEventForm({ ...eventForm, eventDate: e.target.value })} required />
                                         </div>
                                         <div className="form-group">
-                                            <label>⏰ Time</label>
+                                            <label><i className="fa-regular fa-clock" /> Time</label>
                                             <input type="time" value={eventForm.eventTime} onChange={e => setEventForm({ ...eventForm, eventTime: e.target.value })} />
                                         </div>
                                     </div>
                                     <div className="form-row">
                                         <div className="form-group">
-                                            <label>📍 Venue</label>
+                                            <label><i className="fa-solid fa-location-dot" /> Venue</label>
                                             <input value={eventForm.venueId} onChange={e => setEventForm({ ...eventForm, venueId: e.target.value })} placeholder="Venue ID" />
                                         </div>
                                         <div className="form-group">
-                                            <label>⏳ Deadline</label>
+                                            <label><i className="fa-solid fa-hourglass-half" /> Deadline</label>
                                             <input type="date" value={eventForm.deadline} onChange={e => setEventForm({ ...eventForm, deadline: e.target.value })} />
                                         </div>
                                     </div>
                                     <div className="form-group">
-                                        <label>🔗 Registration Link</label>
+                                        <label><i className="fa-solid fa-link" /> Registration Link</label>
                                         <input value={eventForm.registrationFormLink} onChange={e => setEventForm({ ...eventForm, registrationFormLink: e.target.value })} placeholder="https://…" />
                                     </div>
                                     <button type="submit" className="btn btn-primary btn-full">
-                                        {editingItem ? '✅ Update Event' : '➕ Add Event'}
+                                        {editingItem ? <><i className="fa-solid fa-check" /> Update Event</> : <><i className="fa-solid fa-plus" /> Add Event</>}
                                     </button>
                                 </form>
                             </>
@@ -582,10 +581,10 @@ const AdminDashboard = () => {
                         {/* ── Assign faculty modal ── */}
                         {modalType === 'assign' && (
                             <>
-                                <h3>👨‍🏫 Assign Faculty to Club</h3>
+                                <h3><i className="fa-solid fa-chalkboard-user" /> Assign Faculty to Club</h3>
                                 <form onSubmit={handleAssignFaculty}>
                                     <div className="form-group">
-                                        <label>👤 Faculty Member *</label>
+                                        <label><i className="fa-solid fa-user" /> Faculty Member *</label>
                                         <select value={assignForm.email} onChange={e => setAssignForm({ ...assignForm, email: e.target.value })} required>
                                             <option value="">Select a faculty member…</option>
                                             {faculty.filter(f => !f.clubId).map(f => (
@@ -594,13 +593,13 @@ const AdminDashboard = () => {
                                         </select>
                                     </div>
                                     <div className="form-group">
-                                        <label>🏢 Club *</label>
+                                        <label><i className="fa-solid fa-building" /> Club *</label>
                                         <select value={assignForm.clubId} onChange={e => setAssignForm({ ...assignForm, clubId: e.target.value })} required>
                                             <option value="">Select a club…</option>
                                             {clubs.map(c => <option key={c.clubId} value={c.clubId}>{c.clubName}</option>)}
                                         </select>
                                     </div>
-                                    <button type="submit" className="btn btn-primary btn-full">✅ Assign Faculty</button>
+                                    <button type="submit" className="btn btn-primary btn-full"><i className="fa-solid fa-check" /> Assign Faculty</button>
                                 </form>
                             </>
                         )}

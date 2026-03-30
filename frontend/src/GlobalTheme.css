@@ -168,6 +168,7 @@ button,
     color: #111827;
     transform: translateY(-3px) scale(1.02);
     box-shadow: 0 12px 24px rgba(37, 99, 235, 0.4), 0 0 0 1px rgba(37, 99, 235, 0.1);
+    text-decoration: none !important;
 }
 
 .btn-primary:active,
@@ -212,6 +213,7 @@ button,
     border-color: var(--secondary-hov);
     transform: translateY(-3px) scale(1.02);
     box-shadow: 0 12px 24px rgba(14, 165, 233, 0.4), 0 0 0 1px rgba(14, 165, 233, 0.1);
+    text-decoration: none !important;
 }
 
 /* Outline Button */
@@ -248,6 +250,7 @@ button,
     color: var(--primary);
     transform: translateY(-3px);
     box-shadow: 0 8px 16px var(--border-light);
+    text-decoration: none !important;
 }
 
 /* Ghost Button */
@@ -279,6 +282,7 @@ button,
     color: var(--primary);
     transform: translateY(-3px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+    text-decoration: none !important;
 }
 
 /* Size variants */
@@ -712,3 +716,97 @@ textarea {
 .max-w-md { max-width: 448px; }
 .max-w-lg { max-width: 512px; }
 .max-w-xl { max-width: 576px; }
+
+/* ══════════════════════════════════════════════════════
+   CUSTOM ANIMATIONS (Uiverse)
+   ══════════════════════════════════════════════════════ */
+
+/* Custom Logout/Today Animation */
+.logout-anim-btn {
+  position: relative !important;
+  z-index: 0;
+  overflow: hidden !important;
+  transition: all 0.3s cubic-bezier(0.02, 0.01, 0.47, 1) !important;
+}
+
+.logout-anim-btn:hover {
+  animation: sh0 0.5s ease-in-out both !important;
+}
+
+@keyframes sh0 {
+  0% { transform: rotate(0deg) translate3d(0, 0, 0); }
+  25% { transform: rotate(7deg) translate3d(0, 0, 0); }
+  50% { transform: rotate(-7deg) translate3d(0, 0, 0); }
+  75% { transform: rotate(1deg) translate3d(0, 0, 0); }
+  100% { transform: rotate(0deg) translate3d(0, 0, 0); }
+}
+
+@keyframes storm {
+  0% { transform: translate3d(0, 0, 0) translateZ(0); }
+  25% { transform: translate3d(4px, 0, 0) translateZ(0); }
+  50% { transform: translate3d(-3px, 0, 0) translateZ(0); }
+  75% { transform: translate3d(2px, 0, 0) translateZ(0); }
+  100% { transform: translate3d(0, 0, 0) translateZ(0); }
+}
+
+.logout-anim-btn:hover span {
+  animation: storm 0.7s ease-in-out both;
+  animation-delay: 0.06s;
+  display: inline-block;
+}
+
+.logout-anim-btn::before,
+.logout-anim-btn::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0;
+  transition: transform 0.15s cubic-bezier(0.02, 0.01, 0.47, 1), opacity 0.15s cubic-bezier(0.02, 0.01, 0.47, 1);
+  z-index: -1;
+  transform: translate(100%, -25%) translate3d(0, 0, 0);
+}
+
+.logout-anim-btn:hover::before,
+.logout-anim-btn:hover::after {
+  opacity: 0.15;
+  transition: transform 0.2s cubic-bezier(0.02, 0.01, 0.47, 1), opacity 0.2s cubic-bezier(0.02, 0.01, 0.47, 1);
+}
+
+.logout-anim-btn:hover::before {
+  transform: translate3d(50%, 0, 0) scale(0.9);
+}
+
+.logout-anim-btn:hover::after {
+  transform: translate(50%, 0) scale(1.1);
+}
+
+/* Dashboard Button — static dashed outline, no animation */
+.dash-anim-btn {
+  background-color: transparent !important;
+  border: 2px dashed var(--secondary) !important;
+  color: var(--secondary) !important;
+  text-decoration: none !important;
+  box-shadow: none !important;
+  transition: none !important;
+  transform: none !important;
+}
+
+.dash-anim-btn:hover {
+  background-color: transparent !important;
+  border: 2px dashed var(--secondary) !important;
+  color: var(--secondary) !important;
+  text-decoration: none !important;
+  transform: none !important;
+  box-shadow: none !important;
+  animation: none !important;
+}
+
+.dash-anim-btn::before,
+.dash-anim-btn::after {
+  display: none !important;
+}

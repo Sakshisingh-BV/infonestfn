@@ -64,17 +64,16 @@ const StudentDashboard = () => {
     return (
         <div className="student-dashboard page-container">
             <header className="dashboard-header card">
-                <h1>🎓 Welcome, <span>{user?.firstName || 'Student'}</span>!</h1>
+                <h1><i className="fa-solid fa-graduation-cap" style={{marginRight:'0.5rem'}} /> Welcome, <span>{user?.firstName || 'Student'}</span>!</h1>
                 <div className="header-actions">
-                    <Link to="/events" className="btn btn-primary">🔍 Browse Events</Link>
-                    <button className="btn btn-danger" onClick={logout}>Logout</button>
+                    <Link to="/events" className="btn btn-primary"><i className="fa-solid fa-magnifying-glass" /> Browse Events</Link>
                 </div>
             </header>
 
             <div style={{ height: '1.5rem' }} />
 
             <div className="card">
-                <h2>📋 My Event Registrations</h2>
+                <h2><i className="fa-solid fa-clipboard-list" /> My Event Registrations</h2>
                 <table>
 
                     <thead>
@@ -120,7 +119,7 @@ const StudentDashboard = () => {
                 <div className="modal-overlay" onClick={closeModal}>
                     <div className="modal" onClick={e => e.stopPropagation()}>
                         <button className="close-btn" onClick={closeModal}>×</button>
-                        <h3>📄 Registration Details</h3>
+                        <h3><i className="fa-solid fa-file-lines" /> Registration Details</h3>
                         <ul className="details-list">
                             <li><strong>Registration ID:</strong> {selectedReg.regId}</li>
                             <li><strong>Event:</strong> {getEventName(selectedReg.eventId)}</li>

@@ -13,7 +13,9 @@ const VenueCard = ({ venue, onAction }) => {
             </p>
             
             <div className="vc-go-corner" onClick={() => onAction && onAction(venue)}>
-                <div className="vc-go-arrow">🗑️</div>
+                <div className="vc-go-arrow">
+                    <i className="fa-solid fa-trash" style={{ fontSize: '0.8rem', color: 'white' }} />
+                </div>
             </div>
         </div>
     );

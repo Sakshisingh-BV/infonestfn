@@ -41,11 +41,11 @@ const Navbar = () => {
 
                     {isAuthenticated ? (
                         <>
-                            <Link to={goToDashboard()} className="btn btn-secondary">
+                            <Link to={goToDashboard()} className="btn btn-secondary dash-anim-btn">
                                 My Dashboard
                             </Link>
-                            <button onClick={logout} className="btn btn-secondary">
-                                Logout
+                            <button onClick={logout} className="btn btn-secondary logout-anim-btn">
+                                <span>Logout</span>
                             </button>
                         </>
                     ) : (

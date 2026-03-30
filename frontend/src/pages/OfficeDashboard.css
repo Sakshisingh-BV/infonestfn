@@ -223,14 +223,25 @@
     font-weight: 600;
     border-radius: var(--radius);
     cursor: pointer;
-    border: 1px solid var(--border);
-    background: var(--card);
-    transition: 0.2s;
+    border: 1.5px solid currentColor;
+    background: transparent;
+    transition: none;
 }
 
-.btn-sm:hover {
-    border-color: var(--primary);
-    color: var(--primary);
+
+.btn-sm.btn-success {
+    color: #16a34a;
+    border-color: #16a34a;
+}
+
+.btn-sm.btn-warning {
+    color: #d97706;
+    border-color: #d97706;
+}
+
+.btn-sm.btn-danger {
+    color: #ef4444;
+    border-color: #ef4444;
 }
 
 /* Bulk Template Section alignment */

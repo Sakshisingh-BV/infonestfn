@@ -211,12 +211,11 @@ const FacultyDashboard = () => {
         <div className="faculty-dashboard page-container">
             <header className="dashboard-header card">
                 <div className="header-info">
-                    <h1>👨‍🏫 Club Official Dashboard</h1>
+                    <h1><i className="fa-solid fa-chalkboard-user" style={{marginRight:'0.5rem'}} /> Club Official Dashboard</h1>
                     <span className="club-badge">{club?.clubId || 'No Club'}</span>
                 </div>
                 <div className="header-actions">
-                    <Link to="/events" className="btn btn-secondary">🔍 Browse Events</Link>
-                    <button className="btn btn-danger" onClick={logout}>Logout</button>
+                    <Link to="/events" className="btn btn-secondary"><i className="fa-solid fa-magnifying-glass" /> Browse Events</Link>
                 </div>
             </header>
 
@@ -233,30 +232,30 @@ const FacultyDashboard = () => {
             {/* Tabs */}
             <div className="tabs">
                 <button className={`tab-btn ${activeTab === 'events' ? 'active' : ''}`} onClick={() => showTab('events')}>
-                    📅 My Events
+                    <i className="fa-solid fa-calendar-days" /> My Events
                 </button>
                 <button className={`tab-btn ${activeTab === 'submissions' ? 'active' : ''}`} onClick={() => showTab('submissions')}>
-                    📋 Submissions
+                    <i className="fa-solid fa-clipboard-list" /> Submissions
                 </button>
                 <button className={`tab-btn ${activeTab === 'myregs' ? 'active' : ''}`} onClick={() => showTab('myregs')}>
-                    ✅ My Registrations
+                    <i className="fa-solid fa-circle-check" /> My Registrations
                 </button>
                 <button className={`tab-btn ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => showTab('settings')}>
-                    ⚙️ Club Settings
+                    <i className="fa-solid fa-gear" /> Club Settings
                 </button>
                 <button className={`tab-btn ${activeTab === 'bookings' ? 'active' : ''}`} onClick={() => showTab('bookings')}>
-                    📋 My Bookings
+                    <i className="fa-solid fa-calendar-check" /> My Bookings
                 </button>
             </div>
 
             {/* Events Tab */}
             {activeTab === 'events' && (
                 <div className="card">
-                    <h2>📅 Manage Club Events</h2>
+                    <h2><i className="fa-solid fa-calendar-days" /> Manage Club Events</h2>
                     <div className="action-bar">
-                        <button className="btn btn-primary" onClick={() => { resetForm(); setShowAddModal(true); }}>➕ Add New Event</button>
-                        <button className="btn btn-secondary" onClick={() => { resetForm(); setShowUpdateModal(true); }}>✏️ Update Event</button>
-                        <button className="btn btn-secondary" onClick={fetchData}>🔄 Refresh</button>
+                        <button className="btn btn-primary" onClick={() => { resetForm(); setShowAddModal(true); }}><i className="fa-solid fa-plus" /> Add New Event</button>
+                        <button className="btn btn-secondary" onClick={() => { resetForm(); setShowUpdateModal(true); }}><i className="fa-solid fa-pen-to-square" /> Update Event</button>
+                        <button className="btn btn-secondary" onClick={fetchData}><i className="fa-solid fa-arrows-rotate" /> Refresh</button>
                     </div>
 
                     {/* Animated Event Cards with Flip Animation */}
@@ -281,9 +280,9 @@ const FacultyDashboard = () => {
             {/* Submissions Tab */}
             {activeTab === 'submissions' && (
                 <div className="card">
-                    <h2>📋 Event Submissions</h2>
+                    <h2><i className="fa-solid fa-clipboard-list" /> Event Submissions</h2>
                     <div className="action-bar">
-                        <button className="btn btn-secondary" onClick={fetchData}>🔄 Refresh Submissions</button>
+                        <button className="btn btn-secondary" onClick={fetchData}><i className="fa-solid fa-arrows-rotate" /> Refresh Submissions</button>
                     </div>
                     <table>
                         <thead>
@@ -297,7 +296,7 @@ const FacultyDashboard = () => {
                                     <td>{sub.submissionDate ? new Date(sub.submissionDate).toLocaleDateString() : '-'}</td>
                                     <td><span className={`status-${sub.status?.toLowerCase()}`}>{sub.status}</span></td>
                                     <td>
-                                        <button className="btn btn-secondary" onClick={() => openViewModal(sub)}>👁️ View</button>
+                                        <button className="btn btn-secondary" onClick={() => openViewModal(sub)}><i className="fa-solid fa-eye" /> View</button>
                                     </td>
                                 </tr>
                             )) : (
@@ -311,7 +310,7 @@ const FacultyDashboard = () => {
             {/* My Registrations Tab */}
             {activeTab === 'myregs' && (
                 <div className="card">
-                    <h2>✅ My Event Registrations</h2>
+                    <h2><i className="fa-solid fa-circle-check" /> My Event Registrations</h2>
                     <table>
                         <thead>
                             <tr><th>Event</th><th>Submitted On</th><th>Status</th></tr>
@@ -334,7 +333,7 @@ const FacultyDashboard = () => {
             {/* Club Settings Tab */}
             {activeTab === 'settings' && (
                 <div className="card">
-                    <h2>⚙️ Club Settings</h2>
+                    <h2><i className="fa-solid fa-gear" /> Club Settings</h2>
                     <div className="form-group">
                         <label>Club Name</label>
                         <input type="text" value={club?.clubName || ''} disabled style={{ opacity: 0.7 }} />
@@ -343,17 +342,17 @@ const FacultyDashboard = () => {
                         <label>Club Description</label>
                         <textarea id="clubDescription" rows={6} defaultValue={club?.description || ''} placeholder="Enter your club's description..." />
                     </div>
-                    <button className="btn btn-primary" onClick={updateClubDescription}>💾 Save Description</button>
+                    <button className="btn btn-primary" onClick={updateClubDescription}><i className="fa-solid fa-floppy-disk" /> Save Description</button>
                 </div>
             )}
 
             {/* My Bookings Tab */}
             {activeTab === 'bookings' && (
                 <div className="card">
-                    <h2>📅 My Venue Bookings</h2>
+                    <h2><i className="fa-solid fa-calendar-check" /> My Venue Bookings</h2>
                     <div className="action-bar">
-                        <Link to="/booking" className="btn btn-primary">➕ New Booking</Link>
-                        <button className="btn btn-secondary" onClick={fetchData}>🔄 Refresh</button>
+                        <Link to="/booking" className="btn btn-primary"><i className="fa-solid fa-plus" /> New Booking</Link>
+                        <button className="btn btn-secondary" onClick={fetchData}><i className="fa-solid fa-arrows-rotate" /> Refresh</button>
                     </div>
 
                     {/* Calendar View */}
@@ -392,7 +391,7 @@ const FacultyDashboard = () => {
                 <div className="modal-overlay" onClick={() => setShowAddModal(false)}>
                     <div className="modal" onClick={e => e.stopPropagation()}>
                         <button className="close-btn" onClick={() => setShowAddModal(false)}>×</button>
-                        <h3>➕ Add New Event</h3>
+                        <h3><i className="fa-solid fa-plus" /> Add New Event</h3>
                         <form onSubmit={handleAddEvent}>
                             <div className="form-group">
                                 <label>Event Name *</label>
@@ -437,12 +436,12 @@ const FacultyDashboard = () => {
                 <div className="modal-overlay" onClick={() => setShowUpdateModal(false)}>
                     <div className="modal" onClick={e => e.stopPropagation()}>
                         <button className="close-btn" onClick={() => setShowUpdateModal(false)}>×</button>
-                        <h3>✏️ Update Event</h3>
+                        <h3><i className="fa-solid fa-pen-to-square" /> Update Event</h3>
                         <div className="form-group">
                             <label>Search by Event Name</label>
                             <input value={searchEventName} onChange={e => setSearchEventName(e.target.value)} placeholder="Enter exact event name" />
                         </div>
-                        <button className="btn btn-secondary" onClick={fetchEventForUpdate}>🔍 Find Event</button>
+                        <button className="btn btn-secondary" onClick={fetchEventForUpdate}><i className="fa-solid fa-magnifying-glass" /> Find Event</button>
 
                         {editingEvent && (
                             <form onSubmit={handleUpdateEvent} style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
@@ -490,7 +489,7 @@ const FacultyDashboard = () => {
                 <div className="modal-overlay" onClick={() => setShowViewModal(false)}>
                     <div className="modal view-modal" onClick={e => e.stopPropagation()}>
                         <button className="close-btn" onClick={() => setShowViewModal(false)}>×</button>
-                        <h3>📋 Submission Details</h3>
+                        <h3><i className="fa-solid fa-clipboard-list" /> Submission Details</h3>
 
                         <div className="submission-info">
                             <div className="info-row">
@@ -518,7 +517,7 @@ const FacultyDashboard = () => {
                         </div>
 
                         <div className="form-data-section">
-                            <h4>📝 Form Data</h4>
+                            <h4><i className="fa-solid fa-pen" /> Form Data</h4>
                             {parseFormData(viewingSubmission.formData) ? (
                                 <div className="form-data-grid">
                                     {Object.entries(parseFormData(viewingSubmission.formData)).map(([key, value]) => (

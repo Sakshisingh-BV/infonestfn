@@ -94,7 +94,7 @@ public void deleteTeacherSchedule(String email) {
 }
 
     // Try several heuristics to locate a manageable teacher record from uploaded name/email
-    private List<User> findMatchingUsers(String raw) {
+    public List<User> findMatchingUsers(String raw) {
         String q = raw == null ? "" : raw.trim();
         Set<User> results = new HashSet<>();
 
