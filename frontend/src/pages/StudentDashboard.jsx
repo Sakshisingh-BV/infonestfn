@@ -64,7 +64,7 @@ const StudentDashboard = () => {
     return (
         <div className="student-dashboard page-container">
             <header className="dashboard-header card">
-                <h1><i className="fa-solid fa-graduation-cap" style={{marginRight:'0.5rem'}} /> Welcome, <span>{user?.firstName || 'Student'}</span>!</h1>
+                <h1><i className="fa-solid fa-graduation-cap" style={{ marginRight: '0.5rem' }} /> Welcome, <span>{user?.firstName || 'Student'}</span>!</h1>
                 <div className="header-actions">
                     <Link to="/events" className="btn btn-primary"><i className="fa-solid fa-magnifying-glass" /> Browse Events</Link>
                 </div>
