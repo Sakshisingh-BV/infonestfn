@@ -1,0 +1,206 @@
+/* Neobrutalist Event Card – Events page only */
+/* Based on Uiverse.io by 0xnihilism */
+
+.neo-events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.neo-card {
+  width: 100%;
+  max-width: 340px;
+  padding: 22px 24px;
+  background: #fff;
+  border: 5px solid #000;
+  box-shadow: 10px 10px 0 #000;
+  transition: transform 0.3s, box-shadow 0.3s;
+  font-family: inherit;
+  position: relative;
+  cursor: pointer;
+}
+
+.neo-card:hover {
+  transform: translate(-5px, -5px);
+  box-shadow: 15px 15px 0 #000;
+}
+
+/* Title */
+.neo-card__title {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #000;
+  text-transform: uppercase;
+  margin: 0 0 4px 0;
+  padding-right: 60px;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  line-height: 1.25;
+}
+
+.neo-card__title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 90%;
+  height: 3px;
+  background-color: #000;
+  transform: translateX(-100%);
+  transition: transform 0.3s;
+}
+
+.neo-card:hover .neo-card__title::after {
+  transform: translateX(0);
+}
+
+/* Club tag */
+.neo-card__club {
+  font-size: 0.82rem;
+  color: #555;
+  font-weight: 600;
+  margin: 0 0 14px 0;
+  letter-spacing: 0.02em;
+}
+
+/* Date badge */
+.neo-card__date-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #000;
+  color: #fff;
+  padding: 3px 7px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: 2px solid #000;
+  white-space: nowrap;
+}
+
+/* Info row */
+.neo-card__info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.neo-card__info-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: #222;
+  font-weight: 600;
+}
+
+.neo-card__info-item span:first-child {
+  font-size: 1rem;
+}
+
+/* Description */
+.neo-card__content {
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: #333;
+  margin-bottom: 18px;
+  min-height: 36px;
+}
+
+/* Button */
+.neo-card__button {
+  border: 3px solid #000;
+  background: #000;
+  color: #fff;
+  padding: 10px 0;
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s;
+  width: 55%;
+  display: block;
+  margin: 0 auto 0 0;
+  font-family: inherit;
+  letter-spacing: 0.04em;
+}
+
+.neo-card__button::before {
+  content: "Sure?";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 105%;
+  background-color: #5ad641;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(100%);
+  transition: transform 0.3s;
+  font-weight: 800;
+}
+
+.neo-card__button:hover::before {
+  transform: translateY(0);
+}
+
+.neo-card__button:active {
+  transform: scale(0.95);
+}
+
+/* Delete variant */
+.neo-card__button--delete {
+  background: transparent;
+  color: #e53e3e;
+  border-color: #e53e3e;
+}
+
+.neo-card__button--delete::before {
+  content: "Confirm?";
+  background-color: #e53e3e;
+  color: #fff;
+}
+
+/* No-event placeholder */
+.neo-card--empty {
+  cursor: default;
+  opacity: 0.6;
+  border-style: dashed;
+}
+
+.neo-card--empty:hover {
+  transform: none;
+  box-shadow: 10px 10px 0 #000;
+}
+
+/* Glitch animation (available for error states, etc.) */
+@keyframes neo-glitch {
+  0%   { transform: translate(2px, 2px); }
+  25%  { transform: translate(-2px, -2px); }
+  50%  { transform: translate(-2px, 2px); }
+  75%  { transform: translate(2px, -2px); }
+  100% { transform: translate(2px, 2px); }
+}
+
+.neo-glitch {
+  animation: neo-glitch 0.3s infinite;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .neo-events-grid {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .neo-card {
+    max-width: 100%;
+  }
+}

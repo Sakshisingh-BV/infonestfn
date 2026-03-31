@@ -53,17 +53,8 @@
   padding-bottom: 0.75rem;
 }
 
-@keyframes autoSlideIcons {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(4px); } /* do step right */
-  50% { transform: translateX(0); }   /* original position */
-  75% { transform: translateX(-4px); }/* do step left */
-  100% { transform: translateX(0); }  /* original position */
-}
-
 .clubs-title-icon {
   display: inline-block;
-  animation: autoSlideIcons 2s ease-in-out infinite;
 }
 
 /* Clubs Grid using Uiverse horizontal card */
@@ -76,8 +67,8 @@
 }
 
 .club-ui-card {
-  width: 710px;
-  /* Increased from 280px */
+  width: 100%;
+  max-width: 710px;
   height: 80px;
   border-radius: 8px;
   box-sizing: border-box;
@@ -108,21 +99,19 @@
   top: 32px;
   width: 80px;
   fill: rgba(30, 58, 138, 0.1);
-  /* Navy blue with 0.1 opacity */
 }
 
 .club-ui-card .icon-container {
   width: 35px;
   height: 35px;
+  min-width: 35px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: rgba(30, 58, 138, 0.15);
-  /* Navy blue with 0.15 opacity */
   border-radius: 50%;
   margin-left: 8px;
   z-index: 1;
-  /* Above wave */
   transition: transform 0.3s ease;
 }
 
@@ -131,13 +120,13 @@
     transform: translateX(0);
   }
   30% {
-    transform: translateX(-4px); /* step 1 left */
+    transform: translateX(-4px);
   }
   50% {
-    transform: translateX(-1px); /* slight recoil */
+    transform: translateX(-1px);
   }
   70% {
-    transform: translateX(-4px); /* step 2 left */
+    transform: translateX(-4px);
   }
 }
 
@@ -149,7 +138,6 @@
   width: 17px;
   height: 17px;
   color: #1e3a8a;
-  /* Navy blue */
 }
 
 .club-ui-card .message-text-container {
@@ -158,6 +146,7 @@
   justify-content: center;
   align-items: flex-start;
   flex-grow: 1;
+  min-width: 0;
   z-index: 1;
 }
 
@@ -169,14 +158,13 @@
 
 .club-ui-card .message-text {
   color: #1e3a8a;
-  /* Navy blue */
   font-size: 16px;
   font-weight: 800;
   letter-spacing: -0.02em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 130px;
+  max-width: 100%;
 }
 
 .club-ui-card .sub-text {
@@ -187,6 +175,7 @@
 .club-ui-card .cross-icon {
   width: 18px;
   height: 18px;
+  min-width: 18px;
   color: var(--muted);
   cursor: pointer;
   z-index: 1;
@@ -196,7 +185,6 @@
 
 .club-ui-card:hover .cross-icon {
   color: #1e3a8a;
-  /* Navy blue on hover */
   opacity: 1;
 }
 
@@ -275,4 +263,104 @@
 .loading-container p {
   color: var(--muted);
   margin-top: 1rem;
+}
+
+/* ===== Responsive Breakpoints ===== */
+
+/* Tablet */
+@media (max-width: 768px) {
+  .events-page {
+    padding: 1.5rem 1rem;
+  }
+
+  .events-page.page-container {
+    padding-top: 3rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+  }
+
+  .club-ui-card {
+    max-width: 100%;
+    height: auto;
+    min-height: 70px;
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .club-ui-card .message-text {
+    font-size: 14px;
+  }
+
+  .events-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .events-page {
+    padding: 1rem 0.75rem;
+  }
+
+  .events-page.page-container {
+    padding-top: 2.5rem;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .section-title {
+    font-size: 1.1rem;
+  }
+
+  .club-ui-card {
+    padding: 8px 10px;
+    gap: 8px;
+    min-height: 64px;
+  }
+
+  .club-ui-card .icon-container {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    margin-left: 4px;
+  }
+
+  .club-ui-card .icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .club-ui-card .message-text {
+    font-size: 13px;
+  }
+
+  .club-ui-card .sub-text {
+    font-size: 11px;
+  }
+
+  .event-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .event-body {
+    padding: 1rem;
+  }
+
+  .event-footer {
+    padding: 0 1rem 1rem;
+  }
 }

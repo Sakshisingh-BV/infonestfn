@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { eventsAPI, studentAPI, clubsAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
-import EventFlipCard from '../components/EventFlipCard';
+import EventNeoBrutCard from '../components/EventNeoBrutCard';
 import { isEventExpired } from './Clubs';
 import './Events.css';
-import '../components/EventFlipCard.css';
+import '../components/EventNeoBrutCard.css';
 
 const Events = () => {
     const { user, isAuthenticated } = useAuth();
@@ -154,10 +154,10 @@ const Events = () => {
 
             {/* Events Section */}
             <h2 className="section-title"><i className="fa-solid fa-calendar-days" style={{ marginRight: '0.5rem' }} />Upcoming Events</h2>
-            <div className="events-grid">
+            <div className="neo-events-grid">
                 {events.length > 0 ? (
                     events.map((event, index) => (
-                        <EventFlipCard
+                        <EventNeoBrutCard
                             key={event.eventId}
                             event={event}
                             index={index}
@@ -165,8 +165,9 @@ const Events = () => {
                         />
                     ))
                 ) : (
-                    <div className="event-card">
-                        <div className="event-body"><p>No upcoming events.</p></div>
+                    <div className="neo-card neo-card--empty">
+                        <span className="neo-card__title">No Events</span>
+                        <p className="neo-card__content">No upcoming events right now. Check back soon!</p>
                     </div>
                 )}
             </div>

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
@@ -5,12 +6,15 @@ import './Navbar.css';
 const Navbar = () => {
     const { user, logout, isAuthenticated } = useAuth();
     const navigate = useNavigate();
+    const [menuOpen, setMenuOpen] = useState(false);
 
     const goToDashboard = () => {
         if (user?.role === 'ADMIN') return '/admin';
         if (user?.role === 'FACULTY') return '/faculty';
         return '/dashboard';
     };
+
+    const closeMenu = () => setMenuOpen(false);
 
     return (
         <header className="header">
@@ -34,27 +38,42 @@ const Navbar = () => {
                     </Link>
                 </div>
 
-                <div className="header-actions">
+                {/* Hamburger toggle — visible only on mobile */}
+                <button
+                    className={`hamburger ${menuOpen ? 'hamburger--active' : ''}`}
+                    onClick={() => setMenuOpen(!menuOpen)}
+                    aria-label="Toggle menu"
+                >
+                    <span className="hamburger__line"></span>
+                    <span className="hamburger__line"></span>
+                    <span className="hamburger__line"></span>
+                </button>
+
+                {/* Actions — slides in on mobile */}
+                <div className={`header-actions ${menuOpen ? 'header-actions--open' : ''}`}>
                     {isAuthenticated && (
                         <span className="user-info">Hi, {user?.firstName || 'User'}!</span>
                     )}
 
                     {isAuthenticated ? (
                         <>
-                            <Link to={goToDashboard()} className="btn btn-secondary dash-anim-btn">
+                            <Link to={goToDashboard()} className="btn btn-secondary dash-anim-btn" onClick={closeMenu}>
                                 My Dashboard
                             </Link>
-                            <button onClick={logout} className="btn btn-secondary logout-anim-btn">
+                            <button onClick={() => { logout(); closeMenu(); }} className="btn btn-secondary logout-anim-btn">
                                 <span>Logout</span>
                             </button>
                         </>
                     ) : (
                         <>
-                            <Link to="/login" className="btn btn-secondary">Sign In</Link>
-                            <Link to="/signup" className="btn btn-primary">Create Account</Link>
+                            <Link to="/login" className="btn btn-secondary" onClick={closeMenu}>Sign In</Link>
+                            <Link to="/signup" className="btn btn-primary" onClick={closeMenu}>Create Account</Link>
                         </>
                     )}
                 </div>
+
+                {/* Overlay when menu is open on mobile */}
+                {menuOpen && <div className="nav-overlay" onClick={closeMenu}></div>}
             </div>
         </header>
     );
