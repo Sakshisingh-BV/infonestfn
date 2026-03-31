@@ -59,6 +59,11 @@ const MyBookingsCalendar = ({ onBookingSelect }) => {
       return dateValue.substring(0, 10);
     }
     
+    // Handle LocalDate array from Java: [2026, 3, 31]
+    if (Array.isArray(dateValue) && dateValue.length >= 3) {
+      return `${dateValue[0]}-${String(dateValue[1]).padStart(2, '0')}-${String(dateValue[2]).padStart(2, '0')}`;
+    }
+    
     // Handle LocalDate object from Java (has year, monthValue, dayOfMonth)
     if (typeof dateValue === 'object') {
       if (dateValue.year && dateValue.monthValue) {

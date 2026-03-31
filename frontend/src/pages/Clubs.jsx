@@ -62,7 +62,6 @@ const CLUB_COLORS = [
 const EventCard = memo(({ event, index, isRegistered, onRegister }) => {
     const [open, setOpen] = useState(false);
     const color = CLUB_COLORS[index % CLUB_COLORS.length];
-
     const expired = isEventExpired(event);
 
     return (
@@ -178,7 +177,11 @@ const EventCard = memo(({ event, index, isRegistered, onRegister }) => {
 });
 
 /* ─────────────────────────────────────────────
+<<<<<<< HEAD
    Club Card — Uiverse.io Animated Card
+=======
+   Club Card (for the grid)
+>>>>>>> origin/final-code
 ───────────────────────────────────────────── */
 const ClubGridCard = memo(({ club, index }) => {
     const color = CLUB_COLORS[index % CLUB_COLORS.length];
@@ -243,7 +246,6 @@ const Clubs = () => {
                 eventsAPI.getUpcomingEvents()
             ]);
             setClubs(clubsRes.data);
-
             // For the main Upcoming Events tab, show strictly non-expired upcoming events
             const allEvents = eventsRes.data || [];
             const upcomingOnly = allEvents.filter(e => !isEventExpired(e));

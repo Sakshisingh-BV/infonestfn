@@ -511,7 +511,6 @@
     transition: background 0.2s;
     white-space: nowrap;
 }
-
 .cl-event-club-link:hover {
     background: color-mix(in srgb, var(--ev-from, #2563eb) 18%, transparent);
     text-decoration: none;
