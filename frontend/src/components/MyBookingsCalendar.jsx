@@ -183,16 +183,6 @@ const MyBookingsCalendar = ({ onBookingSelect }) => {
         )}
       </div>
 
-      <div className="calendar-legend">
-        <div className="legend-item">
-          <span className="legend-dot booked"></span>
-          <span>Has Bookings</span>
-        </div>
-        <div className="legend-item">
-          <span className="legend-dot today"></span>
-          <span>Today</span>
-        </div>
-      </div>
 
 
     </div>
