@@ -1,0 +1,165 @@
+.event-blob-card {
+  position: relative;
+  width: 100%;
+  max-width: 360px; /* Widened */
+  min-height: 250px; /* Slightly taller */
+  border-radius: 14px;
+  z-index: 1; /* Keeping low to avoid popup overlaps */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 10px 10px 30px rgba(0,0,0,0.06),
+             -10px -10px 30px rgba(255,255,255,0.7); /* Neumorphic safe hint */
+  background: white; /* Fallback */
+  transition: transform 0.2s ease;
+}
+
+.event-blob-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 15px 15px 40px rgba(0,0,0,0.08),
+             -15px -15px 40px rgba(255,255,255,0.8);
+}
+
+.event-blob-bg {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.88); /* More Glassmorphic */
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 10px;
+  overflow-y: auto; /* Allow scrolling if content is too large */
+  outline: 1.5px solid rgba(255, 255, 255, 0.9);
+  padding: 1.2rem;
+  
+  display: flex;
+  flex-direction: column;
+}
+
+.event-blob {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background-color: rgba(37, 99, 235, 0.4); /* Solid blue-ish for matching dash */
+  opacity: 1;
+  filter: blur(24px);
+  animation: blob-bounce 6s infinite ease;
+}
+
+@keyframes blob-bounce {
+  0% { transform: translate(-100%, -100%) translate3d(0, 0, 0); }
+  25% { transform: translate(-100%, -100%) translate3d(80%, 0, 0); }
+  50% { transform: translate(-100%, -100%) translate3d(80%, 80%, 0); }
+  75% { transform: translate(-100%, -100%) translate3d(0, 80%, 0); }
+  100% { transform: translate(-100%, -100%) translate3d(0, 0, 0); }
+}
+
+/* Scrollbar for BG */
+.event-blob-bg::-webkit-scrollbar {
+  width: 4px;
+}
+.event-blob-bg::-webkit-scrollbar-track {
+  background: transparent;
+}
+.event-blob-bg::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.1);
+  border-radius: 4px;
+}
+
+/* Card Content Typography */
+.ebc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.ebc-title {
+  color: #1e293b;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 0.2rem 0;
+  line-height: 1.2;
+}
+
+.ebc-club {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+  font-weight: 500;
+}
+
+.ebc-date-badge {
+  background: var(--primary);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+}
+
+.ebc-details {
+  margin-top: 0.75rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #475569;
+}
+
+.ebc-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.ebc-desc {
+  font-size: 0.8rem;
+  color: #334155;
+  margin-top: 0.75rem;
+  line-height: 1.4;
+  flex-grow: 1; /* Pushes action button to bottom */
+}
+
+.ebc-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: stretch;
+}
+
+.ebc-btn {
+  flex-grow: 1;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--primary);
+  color: white;
+}
+
+.ebc-btn:hover {
+  background: var(--primary-hov);
+  transform: translateY(-1px);
+}
+
+.ebc-btn.btn-delete {
+  background: transparent;
+  color: #ef4444;
+  border: 1.5px solid #ef4444;
+}
+
+.ebc-btn.btn-delete:hover {
+  background: #ef4444;
+  color: white;
+}
