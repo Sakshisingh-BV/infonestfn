@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { venueAPI } from '../services/api';
@@ -118,7 +119,16 @@ const Booking = () => {
                 {/* ── Page header ── */}
                 <header className="bk-header">
                     <div className="bk-header-text">
-                        <h1>Venue Booking</h1>
+                        <div className="bk-title-row">
+                            <h1>Venue Booking</h1>
+                            <div className="bk-title-animation" aria-hidden="true">
+                                <DotLottieReact
+                                    src="https://lottie.host/286458cf-77df-4e1e-82a6-86e6e75499cb/doDbNPhiGT.lottie"
+                                    loop
+                                    autoplay
+                                />
+                            </div>
+                        </div>
                         <p>Reserve classrooms and event spaces for your activities</p>
                     </div>
                     {/* section toggle */}

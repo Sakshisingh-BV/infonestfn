@@ -7,21 +7,22 @@ import com.infonest.repository.UserRepository;
 import com.infonest.model.User;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-//import java.util.Optional;
 import java.util.Set;
 import java.util.HashSet;
-//import java.util.Arrays;
+
 @Service
 public class ScheduleService {
 
@@ -32,59 +33,151 @@ public class ScheduleService {
     private VenueBookingRepository venueBookingRepository;
 
     @Autowired
-    private UserRepository userRepository; // Role validation ke liye zaroori hai
-    // added boolean isUpdate parameter
-    // Inside ScheduleService.java
+    private UserRepository userRepository;
 
-    // Add 'uiTeacherName' to parameters
     @Transactional(rollbackFor = Exception.class)
-public void importExcel(MultipartFile file, String email, String teacherName, boolean isUpdate) throws Exception {
-    // 1. Wipe existing schedule to avoid duplicates
-    repository.deleteByEmail(email);
+    public void importExcel(MultipartFile file, String email, String teacherName, boolean isUpdate) throws Exception {
+        // 1. Wipe existing schedule to avoid duplicates
+        repository.deleteByEmail(email);
 
-    try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
-        Sheet sheet = workbook.getSheetAt(0);
+        String originalFilename = file.getOriginalFilename();
+        String contentType = file.getContentType();
+
+        boolean isCsv = (originalFilename != null && originalFilename.toLowerCase().endsWith(".csv"))
+                || "text/csv".equalsIgnoreCase(contentType)
+                || "application/vnd.ms-excel".equalsIgnoreCase(contentType) && (originalFilename != null && originalFilename.toLowerCase().endsWith(".csv"));
+
+        List<Schedules> list;
+
+        if (isCsv) {
+            list = parseCsvFile(file, email, teacherName);
+        } else {
+            list = parseExcelFile(file, email, teacherName);
+        }
+
+        if (list.isEmpty()) {
+            throw new IllegalArgumentException("No valid schedule entries found in the uploaded file.");
+        }
+
+        repository.saveAll(list);
+    }
+
+    /**
+     * Parse CSV file — columns: Teacher Name, Day, Subject, Batch, Room, Start Time, End Time, Cabin
+     */
+    private List<Schedules> parseCsvFile(MultipartFile file, String email, String teacherName) throws Exception {
         List<Schedules> list = new ArrayList<>();
-        DataFormatter formatter = new DataFormatter();
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("H:mm[:ss]");
 
-        for (Row row : sheet) {
-        if (row.getRowNum() == 0) continue; // Skip Header
-        
-        // Check if Teacher Name (Col 0) is empty to stop processing
-        if (row.getCell(0) == null || formatter.formatCellValue(row.getCell(0)).isEmpty()) continue;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
+            String line;
+            boolean headerSkipped = false;
 
-        String day = formatter.formatCellValue(row.getCell(1)).trim().toUpperCase(); // Day is Col 1
-        
-        // logic: Tuesday is a holiday, skip any entries found for it
-        if ("TUESDAY".equals(day)) continue; 
+            while ((line = reader.readLine()) != null) {
+                // Skip empty lines
+                if (line.trim().isEmpty()) continue;
 
-        Schedules s = new Schedules();
-        
-        // Source of truth: Use the email and name provided by the UI selection
-        s.setEmail(email); 
-        s.setTeacherName(teacherName); 
-        
-        // Mapping from Excel Columns
-        s.setDayOfWeek(day);                                               // Col 1
-        s.setSubject(formatter.formatCellValue(row.getCell(2)).trim());     // Col 2
-        s.setBatchName(formatter.formatCellValue(row.getCell(3)).trim());   // Col 3
-        s.setRoomNo(formatter.formatCellValue(row.getCell(4)).trim());      // Col 4
-        
-        // Time Parsing (HH:mm)
-        String startStr = formatter.formatCellValue(row.getCell(5)).trim(); // Col 5
-        String endStr = formatter.formatCellValue(row.getCell(6)).trim();   // Col 6
-        s.setStartTime(LocalTime.parse(startStr, timeFormatter));
-        s.setEndTime(LocalTime.parse(endStr, timeFormatter));
-        
-        s.setSittingCabin(formatter.formatCellValue(row.getCell(7)).trim()); // Col 7
+                // Skip header row
+                if (!headerSkipped) {
+                    headerSkipped = true;
+                    continue;
+                }
 
-        list.add(s);
+                // Split by comma — handle quoted values
+                String[] cols = splitCsvLine(line);
+
+                if (cols.length < 7) continue; // Need at least 7 columns
+
+                // Col 0 = Teacher Name (we use UI-provided name instead)
+                if (cols[0].trim().isEmpty()) continue;
+
+                String day = cols[1].trim().toUpperCase();
+                if ("TUESDAY".equals(day)) continue;
+
+                Schedules s = new Schedules();
+                s.setEmail(email);
+                s.setTeacherName(teacherName);
+                s.setDayOfWeek(day);                    // Col 1
+                s.setSubject(cols[2].trim());            // Col 2
+                s.setBatchName(cols[3].trim());          // Col 3
+                s.setRoomNo(cols[4].trim());             // Col 4
+
+                String startStr = cols[5].trim();        // Col 5
+                String endStr = cols[6].trim();          // Col 6
+                s.setStartTime(LocalTime.parse(startStr, timeFormatter));
+                s.setEndTime(LocalTime.parse(endStr, timeFormatter));
+
+                // Col 7 = Cabin (optional)
+                s.setSittingCabin(cols.length > 7 ? cols[7].trim() : "");
+
+                list.add(s);
+            }
+        }
+        return list;
     }
-    // Save all rows at once
-    repository.saveAll(list);
+
+    /**
+     * Split a CSV line handling quoted fields with commas inside them
+     */
+    private String[] splitCsvLine(String line) {
+        List<String> result = new ArrayList<>();
+        boolean inQuotes = false;
+        StringBuilder current = new StringBuilder();
+
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (c == '"') {
+                inQuotes = !inQuotes;
+            } else if (c == ',' && !inQuotes) {
+                result.add(current.toString());
+                current = new StringBuilder();
+            } else {
+                current.append(c);
+            }
+        }
+        result.add(current.toString());
+        return result.toArray(new String[0]);
     }
-}
+
+    /**
+     * Parse Excel (.xlsx / .xls) file using WorkbookFactory (auto-detects format)
+     */
+    private List<Schedules> parseExcelFile(MultipartFile file, String email, String teacherName) throws Exception {
+        List<Schedules> list = new ArrayList<>();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("H:mm[:ss]");
+
+        try (Workbook workbook = WorkbookFactory.create(file.getInputStream())) {
+            Sheet sheet = workbook.getSheetAt(0);
+            DataFormatter formatter = new DataFormatter();
+
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) continue; // Skip Header
+
+                if (row.getCell(0) == null || formatter.formatCellValue(row.getCell(0)).isEmpty()) continue;
+
+                String day = formatter.formatCellValue(row.getCell(1)).trim().toUpperCase();
+                if ("TUESDAY".equals(day)) continue;
+
+                Schedules s = new Schedules();
+                s.setEmail(email);
+                s.setTeacherName(teacherName);
+                s.setDayOfWeek(day);
+                s.setSubject(formatter.formatCellValue(row.getCell(2)).trim());
+                s.setBatchName(formatter.formatCellValue(row.getCell(3)).trim());
+                s.setRoomNo(formatter.formatCellValue(row.getCell(4)).trim());
+
+                String startStr = formatter.formatCellValue(row.getCell(5)).trim();
+                String endStr = formatter.formatCellValue(row.getCell(6)).trim();
+                s.setStartTime(LocalTime.parse(startStr, timeFormatter));
+                s.setEndTime(LocalTime.parse(endStr, timeFormatter));
+
+                s.setSittingCabin(formatter.formatCellValue(row.getCell(7)).trim());
+
+                list.add(s);
+            }
+        }
+        return list;
+    }
 
 @Transactional
 public void deleteTeacherSchedule(String email) {

@@ -81,6 +81,32 @@
     margin: 0 0 0.25rem;
 }
 
+.bk-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.bk-title-animation {
+    width: 78px;
+    height: 78px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bk-title-animation > * {
+    width: 100%;
+    height: 100%;
+}
+
+.bk-title-animation canvas,
+.bk-title-animation svg {
+    width: 100% !important;
+    height: 100% !important;
+}
+
 .bk-header-text p {
     font-size: 0.875rem;
     color: #64748b;
@@ -561,6 +587,8 @@
     .bk-page         { padding: 1rem 0.75rem 3rem; }
     .bk-card          { padding: 1.25rem; border-radius: 14px; }
     .bk-header        { flex-direction: column; }
+    .bk-title-row     { gap: 0.5rem; }
+    .bk-title-animation { width: 58px; height: 58px; }
     .bk-form-grid     { grid-template-columns: 1fr; }
     .bk-form-grid-3   { grid-template-columns: 1fr; }
     .bk-form-grid-half { grid-template-columns: 1fr; }

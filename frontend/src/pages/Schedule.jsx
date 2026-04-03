@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { scheduleAPI } from '../services/api';
@@ -157,8 +158,19 @@ const Schedule = () => {
 
                 <div className="schedule-content">
                     <div className="search-form card">
-                        <h3>Teacher Locator</h3>
-                        <p className="form-subtitle">Find where a teacher is right now or check their cabin</p>
+                        <div className="teacher-locator-heading">
+                            <div className="teacher-locator-copy">
+                                <h3>Teacher Locator</h3>
+                                <p className="form-subtitle">Find where a teacher is right now or check their cabin</p>
+                            </div>
+                            <div className="teacher-locator-animation" aria-hidden="true">
+                                <DotLottieReact
+                                    src="https://lottie.host/c8de23ec-cb2c-4562-a938-41fcd26c8f9e/T5jI77iFJ1.lottie"
+                                    loop
+                                    autoplay
+                                />
+                            </div>
+                        </div>
 
                         <div className="form-group">
                             <label>Teacher's Name</label>
